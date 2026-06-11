@@ -69,44 +69,45 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-          <h3 className="text-lg font-bold text-gray-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-200 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/60">
+          <h3 className="text-[15px] font-semibold text-gray-800">
             {mode === 'search' ? 'Search Vehicle & Driver' : 'Add New Vehicle & Driver'}
           </h3>
           <button onClick={handleClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" strokeWidth={2} />
           </button>
         </div>
 
         <div className="p-6 overflow-y-auto flex-grow">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
-              {error}
+            <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-xl border border-red-200">
+              <p className="text-xs font-semibold mb-0.5">Error</p>
+              <p className="text-[13px]">{error}</p>
             </div>
           )}
 
-          <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+          <div className="flex bg-gray-50 rounded-lg p-1 border border-gray-100 mb-5">
             <button
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-                mode === 'search' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              className={`flex-1 py-1.5 text-[13px] font-medium rounded-md transition-all ${
+                mode === 'search' ? 'bg-white text-blue-600 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setMode('search')}
             >
-              <div className="flex items-center justify-center">
-                <Search className="w-4 h-4 mr-2" />
+              <div className="flex items-center justify-center gap-1.5">
+                <Search className="w-3.5 h-3.5" strokeWidth={2} />
                 Search
               </div>
             </button>
             <button
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-                mode === 'create' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              className={`flex-1 py-1.5 text-[13px] font-medium rounded-md transition-all ${
+                mode === 'create' ? 'bg-white text-blue-600 shadow-sm border border-gray-200/50' : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setMode('create')}
             >
-              <div className="flex items-center justify-center">
-                <Plus className="w-4 h-4 mr-2" />
+              <div className="flex items-center justify-center gap-1.5">
+                <Plus className="w-3.5 h-3.5" strokeWidth={2} />
                 Create New
               </div>
             </button>
@@ -115,12 +116,12 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
           {mode === 'search' && (
             <div>
               <div className="relative mb-4">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
+                <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-gray-400" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
+                  className="w-full h-9 pl-9 pr-3 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-gray-400"
                   placeholder="Search by Vehicle No, Driver Name or Mobile..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -131,7 +132,7 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
               <div className="mt-4 space-y-2 max-h-60 overflow-y-auto pr-1">
                 {isLoading ? (
                   <div className="flex justify-center py-8 text-blue-500">
-                    <Loader2 className="w-6 h-6 animate-spin" />
+                    <Loader2 className="w-5 h-5 animate-spin" />
                   </div>
                 ) : results.length > 0 ? (
                   results.map((vehicle) => (
@@ -141,26 +142,26 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
                         onSelect(vehicle);
                         handleClose();
                       }}
-                      className="p-3 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition-colors group flex items-start"
+                      className="p-3 border border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50/50 cursor-pointer transition-colors group flex items-start"
                     >
-                      <div className="mt-1 bg-blue-100 text-blue-600 p-1.5 rounded-full mr-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <div className="mt-0.5 bg-blue-50 text-blue-600 p-1.5 rounded-lg border border-blue-100 mr-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                         <Truck className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 group-hover:text-blue-700">{vehicle.vehicleNumber} ({vehicle.driverName})</p>
-                        <p className="text-sm text-gray-500 mt-0.5">
-                          <span className="font-medium">Mob:</span> {vehicle.driverPhone}
-                          {vehicle.vehicleType && <span className="ml-3"><span className="font-medium">Type:</span> {vehicle.vehicleType}</span>}
+                        <p className="text-[13px] font-semibold text-gray-800 group-hover:text-blue-700">{vehicle.vehicleNumber} ({vehicle.driverName})</p>
+                        <p className="text-[11px] text-gray-500 mt-0.5">
+                          <span className="font-medium text-gray-600">Mob:</span> {vehicle.driverPhone}
+                          {vehicle.vehicleType && <span className="ml-3"><span className="font-medium text-gray-600">Type:</span> {vehicle.vehicleType}</span>}
                         </p>
                       </div>
                     </div>
                   ))
                 ) : query.length >= 2 ? (
-                  <div className="text-center py-8 text-gray-500 text-sm bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                  <div className="text-center py-8 text-gray-500 text-[13px] bg-gray-50 rounded-xl border border-dashed border-gray-200">
                     No results found for "{query}"
                   </div>
                 ) : (
-                  <div className="text-center py-8 text-gray-400 text-sm">
+                  <div className="text-center py-8 text-gray-400 text-[13px]">
                     Type at least 2 characters to search
                   </div>
                 )}
@@ -172,21 +173,21 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Number *</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Vehicle Number *</label>
                   <input
                     type="text"
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 uppercase"
                     value={formData.vehicleNumber}
                     onChange={(e) => setFormData({...formData, vehicleNumber: e.target.value})}
                     placeholder="e.g. AP 16 TG 1234"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Type</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Vehicle Type</label>
                   <input
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                     value={formData.vehicleType}
                     onChange={(e) => setFormData({...formData, vehicleType: e.target.value})}
                     placeholder="e.g. 10 Wheeler"
@@ -195,22 +196,22 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Driver Name *</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Driver Name *</label>
                   <input
                     type="text"
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                     value={formData.driverName}
                     onChange={(e) => setFormData({...formData, driverName: e.target.value})}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Driver Phone *</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Driver Phone *</label>
                   <input
                     type="text"
                     required
                     pattern="[0-9]{10}"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                     value={formData.driverPhone}
                     onChange={(e) => setFormData({...formData, driverPhone: e.target.value.replace(/\D/g, '').slice(0,10)})}
                   />
@@ -218,31 +219,31 @@ const VehicleModal = ({ isOpen, onClose, onSelect, searchApi, createApi }) => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">RC Number</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">RC Number</label>
                   <input
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 uppercase"
                     value={formData.rcNumber}
                     onChange={(e) => setFormData({...formData, rcNumber: e.target.value})}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Driver License</label>
+                  <label className="block text-[11px] font-medium text-gray-500 mb-1">Driver License</label>
                   <input
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase transition-shadow"
+                    className="w-full h-8 px-2.5 text-[13px] border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 uppercase"
                     value={formData.driverLicense}
                     onChange={(e) => setFormData({...formData, driverLicense: e.target.value})}
                   />
                 </div>
               </div>
-              <div className="pt-4">
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full flex justify-center items-center gap-2 px-5 py-2.5 text-[13px] font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
-                  {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : `Save & Select`}
+                  {isLoading ? <Loader2 className="w-4 h-4 animate-spin" strokeWidth={2} /> : `Save & Select`}
                 </button>
               </div>
             </form>
