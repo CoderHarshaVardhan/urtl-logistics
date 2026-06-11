@@ -75,8 +75,8 @@ const AdminDashboard = () => {
       setIsModalOpen(false);
       fetchUsers();
     } catch (err) {
-      alert(err.response?.data?.message || 'Operation failed');
       console.error(err);
+      throw err;
     }
   };
 

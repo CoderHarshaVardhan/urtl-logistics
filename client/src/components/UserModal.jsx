@@ -9,6 +9,9 @@ const UserModal = ({ isOpen, onClose, user, onSave }) => {
     role: 'user',
   });
 
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -20,6 +23,7 @@ const UserModal = ({ isOpen, onClose, user, onSave }) => {
     } else {
       setFormData({ name: '', branch: '', password: '', role: 'user' });
     }
+    setError(null);
   }, [user, isOpen]);
 
   if (!isOpen) return null;
@@ -32,9 +36,17 @@ const UserModal = ({ isOpen, onClose, user, onSave }) => {
     setFormData({ ...formData, [e.target.name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    setError(null);
+    setIsLoading(true);
+    try {
+      await onSave(formData);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'Operation failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -60,6 +72,13 @@ const UserModal = ({ isOpen, onClose, user, onSave }) => {
         {/* Body */}
         <form onSubmit={handleSubmit} className="px-8 py-7 space-y-6">
           
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700">
+              <p className="text-xs font-semibold mb-0.5">Error</p>
+              <p className="text-sm">{error}</p>
+            </div>
+          )}
+
           <div className="space-y-1.5">
             <label className="block text-sm font-bold text-gray-700">Name / Username</label>
             <div className="relative">
@@ -160,9 +179,11 @@ const UserModal = ({ isOpen, onClose, user, onSave }) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              disabled={isLoading}
+              className="flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {user ? 'Save Changes' : 'Create User'}
+              {isLoading && <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>}
+              {isLoading ? 'Saving...' : (user ? 'Save Changes' : 'Create User')}
             </button>
           </div>
 
