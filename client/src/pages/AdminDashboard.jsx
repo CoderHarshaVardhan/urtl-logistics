@@ -110,20 +110,20 @@ const AdminDashboard = () => {
       {/* Header section */}
       <div className="md:flex md:items-center md:justify-between mb-8 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
         <div className="flex-1 min-w-0">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:truncate flex items-center tracking-tight">
-            <div className="p-2 bg-blue-50 rounded-xl mr-4">
-              <Shield className="text-blue-600 h-8 w-8" />
+          <h2 className="text-3xl font-extrabold text-stone-900 sm:truncate flex items-center tracking-tight">
+            <div className="p-2 bg-amber-100 rounded-xl mr-4 border border-amber-200/50">
+              <Shield className="text-amber-700 h-8 w-8" />
             </div>
             Admin Dashboard
           </h2>
-          <p className="mt-2 text-sm text-gray-500 font-medium ml-16">
+          <p className="mt-2 text-sm text-stone-600 font-medium ml-16">
             Manage users, branches, and system access securely.
           </p>
         </div>
         <div className="mt-4 flex md:mt-0 md:ml-4">
           <button
             onClick={handleAddUser}
-            className="inline-flex items-center px-5 py-3 rounded-xl shadow-lg shadow-blue-600/30 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300"
+            className="inline-flex items-center px-5 py-3 rounded-xl shadow-lg shadow-amber-900/20 text-sm font-bold text-white bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-300"
           >
             <Plus className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Add New User
@@ -133,13 +133,13 @@ const AdminDashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
-        <div className="bg-gradient-to-br from-blue-50 to-white overflow-hidden shadow-md rounded-2xl border border-blue-100 p-6 flex items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <div className="p-4 rounded-xl bg-blue-100 text-blue-600 mr-5 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-sm">
+        <div className="bg-gradient-to-br from-amber-50/50 to-white overflow-hidden shadow-md rounded-2xl border border-amber-100 p-6 flex items-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <div className="p-4 rounded-xl bg-amber-100 text-amber-700 mr-5 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300 shadow-sm border border-amber-200/50">
             <Users size={28} />
           </div>
           <div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Total Users</p>
-            <p className="text-3xl font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors duration-300 drop-shadow-sm">{users.length}</p>
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Total Users</p>
+            <p className="text-3xl font-extrabold text-stone-900 group-hover:text-amber-800 transition-colors duration-300 drop-shadow-sm">{users.length}</p>
           </div>
         </div>
       </div>
@@ -148,14 +148,14 @@ const AdminDashboard = () => {
       <div className="mb-8 flex">
         <div className="relative flex-1 max-w-2xl">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+            <Search className="h-5 w-5 text-stone-400" />
           </div>
           <input
             type="text"
             placeholder="Search by name, branch, or role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-2xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:placeholder-gray-300 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all duration-200 shadow-sm hover:shadow-md"
+            className="block w-full pl-12 pr-4 py-3.5 border border-stone-200 rounded-2xl leading-5 bg-white placeholder-stone-400 focus:outline-none focus:placeholder-stone-300 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 sm:text-sm transition-all duration-200 shadow-sm hover:shadow-md"
           />
         </div>
       </div>
@@ -165,51 +165,51 @@ const AdminDashboard = () => {
       
       {loading ? (
         <div className="text-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-3 text-gray-500">Loading users...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
+          <p className="mt-3 text-stone-500">Loading users...</p>
         </div>
       ) : (
-        <div className="bg-white shadow-lg rounded-3xl border border-gray-100/80 overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300">
+        <div className="bg-white shadow-lg rounded-3xl border border-gray-100 overflow-hidden flex flex-col hover:shadow-xl transition-shadow duration-300">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-white">
             <div>
-              <h2 className="text-xl font-extrabold text-gray-900 tracking-tight">System Users</h2>
-              <p className="text-sm text-gray-500 mt-1 font-medium">Manage access and roles</p>
+              <h2 className="text-xl font-extrabold text-stone-900 tracking-tight">System Users</h2>
+              <p className="text-sm text-stone-500 mt-1 font-medium">Manage access and roles</p>
             </div>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50/80">
                 <tr>
-                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-stone-600 uppercase tracking-wider">
                     User Info
                   </th>
-                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-stone-600 uppercase tracking-wider">
                     Branch
                   </th>
-                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-5 text-left text-xs font-bold text-stone-600 uppercase tracking-wider">
                     Role
                   </th>
-                  <th scope="col" className="px-6 py-5 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-5 text-right text-xs font-bold text-stone-600 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-50">
                 {currentRecords.map((user) => (
-                  <tr key={user._id} className="hover:bg-blue-50/50 transition-colors group">
+                  <tr key={user._id} className="hover:bg-amber-50/40 transition-colors group">
                     <td className="px-6 py-5 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-12 w-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center text-blue-700 font-extrabold text-xl shadow-inner border border-blue-200 group-hover:scale-105 transition-transform">
+                        <div className="flex-shrink-0 h-12 w-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center text-amber-800 font-extrabold text-xl shadow-inner border border-amber-200 group-hover:scale-105 transition-transform">
                           {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="ml-4">
-                          <div className="text-base font-bold text-gray-900">{user.name}</div>
+                          <div className="text-base font-bold text-stone-900">{user.name}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap">
-                      <div className="flex items-center text-sm font-medium text-gray-700 bg-gray-50 px-3 py-1.5 rounded-lg w-max border border-gray-100">
-                        <MapPin size={16} className="text-blue-500 mr-2" />
+                      <div className="flex items-center text-sm font-medium text-stone-700 bg-gray-50 px-3 py-1.5 rounded-lg w-max border border-gray-100">
+                        <MapPin size={16} className="text-amber-600 mr-2" />
                         {user.branch}
                       </div>
                     </td>
@@ -226,7 +226,7 @@ const AdminDashboard = () => {
                       <div className="flex items-center justify-end space-x-3">
                         <button
                           onClick={() => handleEditUser(user)}
-                          className="p-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-600 hover:text-white transition-colors border border-blue-100"
+                          className="p-2 text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-600 hover:text-white transition-colors border border-amber-200"
                           title="Edit User"
                         >
                           <Edit2 size={18} />
@@ -246,8 +246,8 @@ const AdminDashboard = () => {
                 
                 {currentRecords.length === 0 && (
                   <tr>
-                    <td colSpan="4" className="px-6 py-12 text-center text-gray-500 bg-gray-50/50">
-                      <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                    <td colSpan="4" className="px-6 py-12 text-center text-stone-500 bg-stone-50/50">
+                      <Users className="w-12 h-12 mx-auto mb-3 text-stone-300" />
                       <p className="font-medium text-lg">No users found matching your search.</p>
                     </td>
                   </tr>
@@ -261,7 +261,7 @@ const AdminDashboard = () => {
             <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
               <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-stone-700">
                     Showing <span className="font-medium">{indexOfFirstRecord + 1}</span> to <span className="font-medium">{Math.min(indexOfLastRecord, filteredUsers.length)}</span> of <span className="font-medium">{filteredUsers.length}</span> results
                   </p>
                 </div>
@@ -270,7 +270,7 @@ const AdminDashboard = () => {
                     <button
                       onClick={handlePrevPage}
                       disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-stone-500 hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <span className="sr-only">Previous</span>
                       <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -282,8 +282,8 @@ const AdminDashboard = () => {
                         onClick={() => setCurrentPage(page)}
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                           currentPage === page
-                            ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                            ? 'z-10 bg-amber-50 border-amber-500 text-amber-700'
+                            : 'bg-white border-gray-300 text-stone-500 hover:bg-gray-50'
                         }`}
                       >
                         {page}
@@ -293,7 +293,7 @@ const AdminDashboard = () => {
                     <button
                       onClick={handleNextPage}
                       disabled={currentPage === totalPages}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-stone-500 hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <span className="sr-only">Next</span>
                       <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -307,15 +307,15 @@ const AdminDashboard = () => {
                 <button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100"
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-gray-50 disabled:bg-gray-100"
                 >
                   Previous
                 </button>
-                <span className="text-sm text-gray-700">Page {currentPage} of {totalPages}</span>
+                <span className="text-sm text-stone-700">Page {currentPage} of {totalPages}</span>
                 <button
                   onClick={handleNextPage}
                   disabled={currentPage === totalPages}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100"
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-gray-50 disabled:bg-gray-100"
                 >
                   Next
                 </button>

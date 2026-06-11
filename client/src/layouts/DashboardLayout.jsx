@@ -58,7 +58,7 @@ const DashboardLayout = () => {
         className={`
           print:hidden fixed inset-y-0 left-0 z-30 w-60
           flex flex-col
-          bg-[#0A0F1E] text-white
+          bg-stone-950 text-white
           border-r border-white/[0.06]
           transition-transform duration-300 ease-in-out
           lg:static lg:translate-x-0
@@ -67,11 +67,9 @@ const DashboardLayout = () => {
       >
         {/* Brand */}
         <div className="flex items-center gap-3 px-5 h-[60px] border-b border-white/[0.06] flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-semibold tracking-wider flex-shrink-0">
-            U
-          </div>
+          <img src="/urtl-logo.png" alt="URTL Logo" className="h-8 w-auto object-contain flex-shrink-0" />
           <div className="flex flex-col leading-tight">
-            <span className="text-[13px] font-semibold tracking-widest text-blue-100">URTL</span>
+            <span className="text-[13px] font-semibold tracking-widest text-amber-100">URTL</span>
             <span className="text-[9px] font-medium tracking-[0.14em] uppercase text-white/30 mt-0.5">Logistics</span>
           </div>
         </div>
@@ -91,7 +89,7 @@ const DashboardLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 px-2.5 py-2.5 rounded-lg text-[13px] font-medium transition-colors duration-150
                      ${isActive
-                       ? 'bg-blue-950/80 text-blue-300'
+                       ? 'bg-amber-900/80 text-amber-200'
                        : 'text-white/40 hover:text-white/75 hover:bg-white/[0.05]'
                      }`
                   }
@@ -99,12 +97,12 @@ const DashboardLayout = () => {
                   {({ isActive }) => (
                     <>
                       <item.icon
-                        className={`w-[15px] h-[15px] flex-shrink-0 ${isActive ? 'text-blue-400' : ''}`}
+                        className={`w-[15px] h-[15px] flex-shrink-0 ${isActive ? 'text-amber-400' : ''}`}
                         strokeWidth={1.75}
                       />
                       <span className="flex-1 truncate">{item.name}</span>
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0" />
                       )}
                     </>
                   )}
@@ -117,7 +115,7 @@ const DashboardLayout = () => {
         {/* User + Logout */}
         <div className="px-3 pb-4 border-t border-white/[0.06] pt-3 flex-shrink-0">
           <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-white/[0.04] cursor-default transition-colors group">
-            <div className="w-8 h-8 rounded-full bg-blue-950 flex items-center justify-center text-[11px] font-semibold text-blue-300 uppercase flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-amber-900 flex items-center justify-center text-[11px] font-semibold text-amber-200 uppercase flex-shrink-0">
               {user?.name?.charAt(0) ?? 'U'}
             </div>
             <div className="flex-1 overflow-hidden">
