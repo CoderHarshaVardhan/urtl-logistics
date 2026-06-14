@@ -29,3 +29,8 @@ export const updateLR = async (id, lrData) => {
   const response = await api.put(`/lrs/${id}`, lrData);
   return response.data;
 };
+
+export const trackLR = async (lrNumber) => {
+  const response = await api.get(`/lrs/track/${lrNumber}`);
+  return response.data;
+};

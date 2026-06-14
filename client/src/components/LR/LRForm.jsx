@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Save, Loader2, Search, Printer, RefreshCw } from 'lucide-react';
 import { createLR, updateLR } from '../../services/lr.service';
 import {
-  searchConsignors, createConsignor,
-  searchConsignees, createConsignee,
+  searchConsignors, createConsignor, updateConsignor,
+  searchConsignees, createConsignee, updateConsignee,
 } from '../../services/party.service';
 import PartyModal from './PartyModal';
 import { useAuth } from '../../hooks/useAuth';
@@ -60,6 +60,7 @@ const LRForm = ({ initialData }) => {
     invoiceNo:     initialData?.invoiceNo     || '',
     ewayBillNumber:initialData?.ewayBillNumber|| '',
     payType:       initialData?.payType       || 'To Pay',
+    status:        initialData?.status        || 'Dispersed',
     remarks:       initialData?.remarks       || '',
     declaredValue: initialData?.declaredValue || '',
     items:         initialData?.items?.length ? [...initialData.items] : [{ ...initialItem }],
@@ -81,6 +82,7 @@ const LRForm = ({ initialData }) => {
       invoiceNo:     initialData.invoiceNo     || '',
       ewayBillNumber:initialData.ewayBillNumber|| '',
       payType:       initialData.payType       || 'To Pay',
+      status:        initialData.status        || 'Dispersed',
       remarks:       initialData.remarks       || '',
       declaredValue: initialData.declaredValue || '',
       items:         initialData.items?.length ? [...initialData.items] : [{ ...initialItem }],
@@ -102,6 +104,10 @@ const LRForm = ({ initialData }) => {
   const addItem       = () => setFormData(p => ({ ...p, items: [...p.items, { ...initialItem }] }));
   const removeItem    = i => formData.items.length > 1 && setFormData(p => ({ ...p, items: p.items.filter((_, j) => j !== i) }));
   const selectParty   = (type, party) => setFormData(p => ({ ...p, [type]: party }));
+  const handlePartyChange = (type, field, val) => setFormData(p => ({
+    ...p,
+    [type]: { ...(p[type] || {}), [field]: val }
+  }));
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -117,6 +123,22 @@ const LRForm = ({ initialData }) => {
 
     setIsLoading(true);
     try {
+      // Update central party records
+      if (formData.consignor?._id) {
+        await updateConsignor(formData.consignor._id, {
+          name: formData.consignor.name,
+          mobile: formData.consignor.mobile,
+          gstNo: formData.consignor.gstNo
+        });
+      }
+      if (formData.consignee?._id) {
+        await updateConsignee(formData.consignee._id, {
+          name: formData.consignee.name,
+          mobile: formData.consignee.mobile,
+          gstNo: formData.consignee.gstNo
+        });
+      }
+
       const payload = { ...formData, consignor: formData.consignor._id, consignee: formData.consignee._id };
       if (isEditMode) {
         const res = await updateLR(initialData._id, payload);
@@ -144,33 +166,149 @@ const LRForm = ({ initialData }) => {
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden print:rounded-none print:border-none print:shadow-none">
+    <>
       <style>{`
         @media print {
           @page { margin: 0; }
           body { 
             -webkit-print-color-adjust: exact; 
-            margin: 10mm !important;
+            margin: 5mm !important;
             background-color: white !important;
           }
         }
       `}</style>
 
-      {/* ── Print header ── */}
-      <div className="hidden print:flex justify-between items-end border-b-2 border-gray-800 pb-2 mb-4">
-        <div className="flex items-center gap-3">
-          <img src="/urtl-logo.png" alt="URTL" className="h-14 object-contain" />
-          <div>
-            <p className="text-xl font-black tracking-wider text-gray-900 leading-tight">URTL LOGISTICS</p>
-            <p className="text-xs text-gray-500">Reliable &amp; Fast Delivery Services</p>
+      {/* ── Print Layout (Tabular, 3 Copies) ── */}
+      <div className="hidden print:block w-full text-black bg-white">
+        {['CONSIGNOR COPY', 'CONSIGNEE COPY', 'DRIVER COPY'].map((copyType, idx) => (
+          <div key={idx} className="w-full mb-2 last:mb-0" style={{ pageBreakInside: 'avoid' }}>
+            <div className="flex justify-between items-center border-2 border-black p-1 border-b-0">
+              <div className="flex items-center gap-2">
+                <img src="/urtl-logo.png" alt="URTL" className="h-6 object-contain grayscale" />
+                <div>
+                  <h1 className="text-base font-black tracking-widest leading-none">URTL LOGISTICS</h1>
+                  <p className="text-[7px] font-semibold mt-0.5">Reliable &amp; Fast Delivery Services</p>
+                </div>
+              </div>
+              <div className="text-right text-[8px] font-semibold leading-tight">
+                <p>LR No: <span className="text-xs">{formData.lrNumber || '________'}</span></p>
+                <p>Date: {formData.date}</p>
+                <p>Branch: {formData.branch}</p>
+              </div>
+            </div>
+
+            <table className="w-full border-2 border-black text-[8px] text-left border-collapse">
+              <tbody>
+                <tr className="border-b-2 border-black align-top">
+                  <td className="w-1/2 border-r-2 border-black p-1">
+                    <p className="font-bold underline mb-0">CONSIGNOR (Sender)</p>
+                    <p className="font-bold text-[9px]">{formData.consignor?.name || '______________________'}</p>
+                    <p>Mobile: {formData.consignor?.mobile || '__________'}</p>
+                    <p>GSTIN: {formData.consignor?.gstNo || '__________'}</p>
+                  </td>
+                  <td className="w-1/2 p-1">
+                    <p className="font-bold underline mb-0">CONSIGNEE (Receiver)</p>
+                    <p className="font-bold text-[9px]">{formData.consignee?.name || '______________________'}</p>
+                    <p>Mobile: {formData.consignee?.mobile || '__________'}</p>
+                    <p>GSTIN: {formData.consignee?.gstNo || '__________'}</p>
+                  </td>
+                </tr>
+                <tr className="border-b-2 border-black">
+                  <td colSpan={2} className="p-0">
+                    <table className="w-full text-center border-collapse text-[8px]">
+                      <tbody>
+                        <tr className="font-bold border-b border-black">
+                          <td className="border-r border-black p-0.5 w-1/6">FROM</td>
+                          <td className="border-r border-black p-0.5 w-1/6">TO</td>
+                          <td className="border-r border-black p-0.5 w-1/6">PAY TYPE</td>
+                          <td className="border-r border-black p-0.5 w-1/6">INVOICE NO</td>
+                          <td className="border-r border-black p-0.5 w-1/6">E-WAY BILL</td>
+                          <td className="p-0.5 w-1/6">DECL. VALUE (₹)</td>
+                        </tr>
+                        <tr>
+                          <td className="border-r border-black p-0.5 uppercase">{formData.fromPlace || '-'}</td>
+                          <td className="border-r border-black p-0.5 uppercase">{formData.toPlace || '-'}</td>
+                          <td className="border-r border-black p-0.5 uppercase font-bold">{formData.payType || '-'}</td>
+                          <td className="border-r border-black p-0.5 uppercase">{formData.invoiceNo || '-'}</td>
+                          <td className="border-r border-black p-0.5 uppercase">{formData.ewayBillNumber || '-'}</td>
+                          <td className="p-0.5 font-bold">{formData.declaredValue || '-'}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr className="align-top">
+                  <td className="w-1/2 border-r-2 border-black p-0">
+                    <table className="w-full border-collapse text-[8px]">
+                      <thead>
+                        <tr className="border-b border-black">
+                          <th className="p-0.5 border-r border-black text-left">ARTICLE</th>
+                          <th className="p-0.5 border-r border-black text-center w-8">QTY</th>
+                          <th className="p-0.5 border-r border-black text-right w-12">ACT WT</th>
+                          <th className="p-0.5 text-right w-12">CHG WT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {formData.items.map((item, i) => (
+                          <tr key={i} className="border-b border-black last:border-0">
+                            <td className="p-0.5 border-r border-black">{item.article || '-'}</td>
+                            <td className="p-0.5 border-r border-black text-center">{item.quantity || '-'}</td>
+                            <td className="p-0.5 border-r border-black text-right">{item.actualWeight || '-'}</td>
+                            <td className="p-0.5 text-right">{item.chargedWeight || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="p-1 border-t border-black text-[7px]">
+                      <p><span className="font-bold">Remarks:</span> {formData.remarks || 'Nil'}</p>
+                    </div>
+                  </td>
+                  <td className="w-1/2 p-0">
+                     <table className="w-full border-collapse text-[8px]">
+                        <tbody>
+                          {[
+                            ['Freight', formData.charges.freight],
+                            ['LR Charge', formData.charges.lrCharge],
+                            ['Article Charge', formData.charges.articleCharge],
+                            ['Online Charge', formData.charges.onlineCharge],
+                            ['Door Delivery', formData.charges.doorDelivery],
+                            ['Handling', formData.charges.handling],
+                            ['Value Surcharge', formData.charges.valueSurCharge],
+                            ['GST', formData.charges.gst],
+                          ].map(([lbl, val], i) => (
+                            <tr key={i} className="border-b border-black last:border-0">
+                              <td className="p-0.5 border-r border-black font-semibold">{lbl}</td>
+                              <td className="p-0.5 text-right font-bold w-16">{val || '0'}</td>
+                            </tr>
+                          ))}
+                          <tr className="border-t-2 border-black bg-gray-100">
+                            <td className="p-0.5 border-r border-black font-black text-[9px]">GRAND TOTAL (₹)</td>
+                            <td className="p-0.5 text-right font-black text-[9px]">{formData.totalAmount.toLocaleString('en-IN')}</td>
+                          </tr>
+                        </tbody>
+                     </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div className="flex justify-between items-end border-2 border-black border-t-0 p-1 pt-3 text-[8px] font-bold">
+              <div className="text-center w-1/3">
+                <p className="border-t border-black pt-0.5 px-3 inline-block">Receiver's Sign & Stamp</p>
+              </div>
+              <div className="text-center w-1/3 text-[6px] text-gray-500 uppercase tracking-widest">
+                <p>Booked at Owner's Risk</p>
+              </div>
+              <div className="text-center w-1/3">
+                <p className="border-t border-black pt-0.5 px-3 inline-block">For URTL Logistics</p>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="text-right text-xs text-gray-600 space-y-0.5">
-          <p><span className="font-semibold">LR No:</span> <span className="text-red-600 font-bold text-sm">{formData.lrNumber || '________'}</span></p>
-          <p><span className="font-semibold">Date:</span> {formData.date}</p>
-          <p><span className="font-semibold">Branch:</span> {formData.branch}</p>
-        </div>
+        ))}
       </div>
+
+      {/* Interactive Form */}
+      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden print:hidden">
 
       {/* ── Form header ── */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50/60 print:hidden">
@@ -244,14 +382,14 @@ const LRForm = ({ initialData }) => {
                 </div>
                 <div className="space-y-2.5 print:space-y-1">
                   <Field label="Name">
-                    <input type="text" readOnly className={readonlyCls} value={formData[key]?.name || ''} placeholder={`Select ${title.toLowerCase()}…`} />
+                    <input type="text" className={inputCls} value={formData[key]?.name || ''} onChange={e => handlePartyChange(key, 'name', e.target.value)} placeholder={`Select ${title.toLowerCase()}…`} />
                   </Field>
                   <div className="grid grid-cols-2 gap-3 print:gap-2">
                     <Field label="Mobile">
-                      <input type="text" readOnly className={readonlyCls} value={formData[key]?.mobile || ''} />
+                      <input type="text" className={inputCls} value={formData[key]?.mobile || ''} onChange={e => handlePartyChange(key, 'mobile', e.target.value)} />
                     </Field>
                     <Field label="GST No">
-                      <input type="text" readOnly className={readonlyCls} value={formData[key]?.gstNo || ''} />
+                      <input type="text" className={inputCls} value={formData[key]?.gstNo || ''} onChange={e => handlePartyChange(key, 'gstNo', e.target.value)} />
                     </Field>
                   </div>
                 </div>
@@ -263,12 +401,20 @@ const LRForm = ({ initialData }) => {
         {/* ── Section 3: Shipment details ── */}
         <div className="pb-6 border-b border-gray-100 print:border-gray-300 print:pb-3">
           <SectionHeading>Shipment details</SectionHeading>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 print:grid-cols-5 print:gap-3 print:text-xs">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 print:grid-cols-6 print:gap-3 print:text-xs">
             <Field label="Pay type">
               <select name="payType" className={inputCls} value={formData.payType} onChange={handleInput}>
                 <option>To Pay</option>
                 <option>Paid</option>
                 <option>FOC</option>
+                <option>TBB</option>
+              </select>
+            </Field>
+            <Field label="Status">
+              <select name="status" className={inputCls} value={formData.status} onChange={handleInput}>
+                <option>Dispersed</option>
+                <option>Delivered</option>
+                <option>On the way</option>
               </select>
             </Field>
             <Field label="Invoice No">
@@ -376,25 +522,7 @@ const LRForm = ({ initialData }) => {
           </div>
         </div>
 
-        {/* ── Print footer ── */}
-        <div className="hidden print:block mt-4 border-t-2 border-gray-800 pt-6 break-inside-avoid">
-          <div className="flex justify-between items-end">
-            <div className="w-1/4">
-              <p className="text-[10px] font-semibold text-gray-700 mb-6">POD / Delivery Date:</p>
-              <div className="border-b-2 border-dashed border-gray-400 w-full" />
-            </div>
-            <div className="w-1/4 text-center">
-              <p className="text-[10px] font-semibold text-gray-700 mb-6">Party's Signature:</p>
-              <div className="border-b-2 border-dashed border-gray-400 w-3/4 mx-auto" />
-              <p className="text-[9px] text-gray-500 mt-1 uppercase tracking-wider font-semibold">Booked at owner's risk</p>
-            </div>
-            <div className="w-1/3 text-right">
-              <p className="text-[10px] font-semibold text-gray-700 mb-6">For URTL LOGISTICS</p>
-              <div className="border-b border-gray-800 w-3/4 ml-auto" />
-              <p className="text-[9px] text-gray-500 mt-1 uppercase tracking-wider">Authorized signatory</p>
-            </div>
-          </div>
-        </div>
+
 
         {/* ── Action bar ── */}
         <div className="print:hidden flex items-center justify-end gap-3 pt-5 border-t border-gray-100">
@@ -445,6 +573,7 @@ const LRForm = ({ initialData }) => {
         createApi={createConsignee}
       />
     </div>
+    </>
   );
 };
 

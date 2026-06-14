@@ -266,3 +266,43 @@ exports.getAvailableLRs = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
+// Public tracking
+exports.trackLR = async (req, res) => {
+  try {
+    const { lrNumber } = req.params;
+    
+    // Search in both collections
+    let lr = await LR_AN.findOne({ lrNumber: new RegExp('^' + lrNumber + '$', 'i') })
+      .populate('consignor', 'name')
+      .populate('consignee', 'name')
+      .lean();
+
+    if (!lr) {
+      lr = await LR_VZ.findOne({ lrNumber: new RegExp('^' + lrNumber + '$', 'i') })
+        .populate('consignor', 'name')
+        .populate('consignee', 'name')
+        .lean();
+    }
+
+    if (!lr) {
+      return res.status(404).json({ success: false, message: 'Lorry Receipt not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        lrNumber: lr.lrNumber,
+        fromPlace: lr.fromPlace,
+        toPlace: lr.toPlace,
+        consignorName: lr.consignor?.name || 'N/A',
+        consigneeName: lr.consignee?.name || 'N/A',
+        status: lr.status || 'Dispersed',
+        date: lr.date
+      }
+    });
+  } catch (error) {
+    console.error('Error tracking LR:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};

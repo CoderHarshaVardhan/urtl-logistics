@@ -14,6 +14,16 @@ exports.createConsignor = async (req, res) => {
   }
 };
 
+exports.updateConsignor = async (req, res) => {
+  try {
+    const consignor = await Consignor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!consignor) return res.status(404).json({ success: false, message: 'Consignor not found' });
+    res.status(200).json({ success: true, data: consignor });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 exports.searchConsignors = async (req, res) => {
   try {
     const { query } = req.query;
@@ -40,6 +50,16 @@ exports.createConsignee = async (req, res) => {
   try {
     const consignee = await Consignee.create(req.body);
     res.status(201).json({ success: true, data: consignee });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateConsignee = async (req, res) => {
+  try {
+    const consignee = await Consignee.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!consignee) return res.status(404).json({ success: false, message: 'Consignee not found' });
+    res.status(200).json({ success: true, data: consignee });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

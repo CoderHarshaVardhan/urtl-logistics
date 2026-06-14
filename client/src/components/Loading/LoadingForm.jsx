@@ -180,14 +180,13 @@ const LoadingForm = ({ initialData }) => {
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden print:rounded-none print:border-none print:shadow-none">
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden print:bg-transparent print:rounded-none print:border-none print:shadow-none">
       <style>{`
         @media print {
           @page { margin: 0; }
           body { 
             -webkit-print-color-adjust: exact; 
             margin: 10mm !important;
-            background-color: white !important;
           }
         }
       `}</style>
@@ -318,7 +317,7 @@ const LoadingForm = ({ initialData }) => {
           <div className="border border-gray-200 print:border-gray-400 rounded-xl overflow-hidden print:rounded-sm">
             <div className="max-h-[350px] print:max-h-none overflow-y-auto print:overflow-visible">
               <table className="w-full text-left border-collapse table-fixed print:text-xs">
-                <thead className="bg-gray-50 print:bg-gray-100 sticky top-0 z-10 shadow-sm print:shadow-none">
+                <thead className="bg-gray-50 print:bg-transparent sticky top-0 z-10 shadow-sm print:shadow-none">
                   <tr>
                     <th className="p-2 print:p-1.5 w-10 text-center print:hidden border-b border-gray-200 print:border-gray-400">
                       <CheckSquare className="w-3.5 h-3.5 text-gray-400 mx-auto" />
@@ -357,7 +356,7 @@ const LoadingForm = ({ initialData }) => {
                       return (
                         <tr 
                           key={lr._id} 
-                          className={`hover:bg-blue-50/50 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50/60' : 'print:hidden'}`}
+                          className={`hover:bg-blue-50/50 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50/60 print:bg-transparent' : 'print:hidden'}`}
                           onClick={() => toggleLRSelection(lr)}
                         >
                           <td className="p-2 print:p-1.5 text-center print:hidden border-r border-gray-100">

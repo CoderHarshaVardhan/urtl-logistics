@@ -18,25 +18,30 @@ const MainLayout = () => {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center group">
             <img src="/urtl-logo.png" alt="URTL Logo" className="h-10 w-auto object-contain transition-transform group-hover:scale-105 duration-300" />
-            <span className="ml-4 text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700 hidden sm:block tracking-tight drop-shadow-sm">
-              URTL Logistics
-            </span>
+            <div className="ml-4 hidden sm:flex sm:flex-col justify-center">
+              <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-700 to-amber-900 tracking-tight drop-shadow-sm leading-none pt-1">
+                URTL Logistics
+              </span>
+              <span className="text-[10px] uppercase font-bold text-amber-800/80 tracking-widest mt-0.5">
+                Uzento Road Transport Logistics
+              </span>
+            </div>
           </Link>
 
           <nav className="flex items-center space-x-1 sm:space-x-4">
             {user ? (
               <>
                 {user.role === 'admin' ? (
-                  <Link to="/admin-dashboard" className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-bold transition-colors">
+                  <Link to="/admin-dashboard" className="px-3 py-2 rounded-lg text-gray-700 hover:text-amber-800 hover:bg-amber-50 font-bold transition-colors">
                     Admin Dashboard
                   </Link>
                 ) : (
-                  <Link to="/dashboard" className="px-3 py-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-bold transition-colors">
+                  <Link to="/dashboard" className="px-3 py-2 rounded-lg text-gray-700 hover:text-amber-800 hover:bg-amber-50 font-bold transition-colors">
                     Dashboard
                   </Link>
                 )}
                 <div className="flex items-center space-x-2 pl-4 border-l border-gray-300 ml-2">
-                  <div className="hidden sm:flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg font-bold text-sm">
+                  <div className="hidden sm:flex items-center px-3 py-1.5 bg-amber-50 text-amber-800 rounded-lg font-bold text-sm border border-amber-100">
                     <UserIcon size={16} className="mr-2" />
                     {user.name}
                   </div>
@@ -52,7 +57,7 @@ const MainLayout = () => {
             ) : (
               <Link
                 to="/login"
-                className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 text-sm font-bold text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md shadow-blue-500/30 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="rounded-xl bg-gradient-to-r from-amber-700 to-amber-900 px-6 py-2.5 text-sm font-bold text-white hover:from-amber-800 hover:to-amber-950 transition-all duration-300 shadow-md shadow-amber-900/30 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-800 focus:ring-offset-2"
               >
                 Login
               </Link>
@@ -69,7 +74,7 @@ const MainLayout = () => {
 
       <footer className="bg-white pt-16 pb-8 border-t border-gray-200 mt-auto shadow-inner relative overflow-hidden">
         {/* Decorative background element for footer */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-50 -mt-32 -mr-32 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-50 rounded-full blur-3xl opacity-50 -mt-32 -mr-32 pointer-events-none"></div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 mb-12">
@@ -77,18 +82,23 @@ const MainLayout = () => {
             {/* Branding & Location */}
             <div className="md:col-span-5 flex flex-col space-y-5">
               <Link to="/" className="flex items-center group inline-flex max-w-max">
-                <div className="bg-gray-50 p-2 rounded-2xl border border-gray-100 group-hover:shadow-md transition-shadow">
+                <div className="bg-amber-50 p-2 rounded-2xl border border-amber-100 group-hover:shadow-md transition-shadow">
                   <img src="/urtl-logo.png" alt="URTL Logo" className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
                 </div>
-                <span className="ml-4 text-3xl font-extrabold text-gray-900 tracking-tight">
-                  URTL Logistics
-                </span>
+                <div className="ml-4 flex flex-col justify-center">
+                  <span className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-amber-700 to-amber-900 tracking-tight leading-none pt-1">
+                    URTL Logistics
+                  </span>
+                  <span className="text-[11px] uppercase font-bold text-amber-800/80 tracking-widest mt-1">
+                    Uzento Road Transport Logistics
+                  </span>
+                </div>
               </Link>
               <p className="text-gray-500 text-base leading-relaxed max-w-md font-medium">
                 Streamlining your global supply chain with modern, reliable, and seamless logistics solutions powered by advanced tracking.
               </p>
               <div className="flex items-center text-gray-700 font-bold bg-gray-50 w-max px-4 py-2 rounded-lg border border-gray-100">
-                <MapPin size={18} className="text-blue-600 mr-2" />
+                <MapPin size={18} className="text-amber-600 mr-2" />
                 Headquarters: Hyderabad, India
               </div>
             </div>
@@ -97,28 +107,28 @@ const MainLayout = () => {
             <div className="md:col-span-4 flex flex-col">
               <h3 className="text-xl font-extrabold text-gray-900 mb-5 flex items-center">
                 Contact Us
-                <div className="ml-3 h-1 w-10 bg-blue-500 rounded-full"></div>
+                <div className="ml-3 h-1 w-10 bg-amber-500 rounded-full"></div>
               </h3>
               <div className="flex flex-col space-y-3">
-                <a href="tel:+916305746114" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 transition-all duration-300 group shadow-sm hover:shadow-md">
-                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-blue-600 group-hover:text-white text-blue-600 transition-colors">
+                <a href="tel:+916305746114" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-amber-50 border border-gray-100 hover:border-amber-200 transition-all duration-300 group shadow-sm hover:shadow-md">
+                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-amber-600 group-hover:text-white text-amber-600 transition-colors">
                     <Phone size={18} />
                   </div>
-                  <span className="text-gray-700 font-bold group-hover:text-blue-700">+91 6305746114</span>
+                  <span className="text-gray-700 font-bold group-hover:text-amber-700">+91 63057 46114</span>
                 </a>
                 
-                <a href="tel:+918207469195" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 transition-all duration-300 group shadow-sm hover:shadow-md">
-                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-blue-600 group-hover:text-white text-blue-600 transition-colors">
+                <a href="tel:+918207469195" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-amber-50 border border-gray-100 hover:border-amber-200 transition-all duration-300 group shadow-sm hover:shadow-md">
+                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-amber-600 group-hover:text-white text-amber-600 transition-colors">
                     <Phone size={18} />
                   </div>
-                  <span className="text-gray-700 font-bold group-hover:text-blue-700">+91 8207469195</span>
+                  <span className="text-gray-700 font-bold group-hover:text-amber-700">+91 8207469195</span>
                 </a>
 
-                <a href="mailto:support@urtllogistics.com" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 transition-all duration-300 group shadow-sm hover:shadow-md">
-                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-blue-600 group-hover:text-white text-blue-600 transition-colors">
+                <a href="mailto:support@urtllogistics.com" className="flex items-center p-3 rounded-xl bg-gray-50 hover:bg-amber-50 border border-gray-100 hover:border-amber-200 transition-all duration-300 group shadow-sm hover:shadow-md">
+                  <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 group-hover:bg-amber-600 group-hover:text-white text-amber-600 transition-colors">
                     <Mail size={18} />
                   </div>
-                  <span className="text-gray-700 font-bold group-hover:text-blue-700 truncate">support@urtllogistics.com</span>
+                  <span className="text-gray-700 font-bold group-hover:text-amber-700 truncate">support@urtllogistics.com</span>
                 </a>
               </div>
             </div>
@@ -127,7 +137,7 @@ const MainLayout = () => {
             <div className="md:col-span-3 flex flex-col">
               <h3 className="text-xl font-extrabold text-gray-900 mb-5 flex items-center">
                 Connect
-                <div className="ml-3 h-1 w-10 bg-blue-500 rounded-full"></div>
+                <div className="ml-3 h-1 w-10 bg-amber-500 rounded-full"></div>
               </h3>
               <div className="flex flex-col space-y-3">
                 <a href="https://wa.me/916305746114" target="_blank" rel="noreferrer" className="flex items-center p-3 rounded-xl bg-green-50 hover:bg-green-100 border border-green-100 hover:border-green-300 transition-all duration-300 group shadow-sm hover:shadow-md">
@@ -137,7 +147,7 @@ const MainLayout = () => {
                   <span className="text-green-800 font-bold">WhatsApp</span>
                 </a>
 
-                <a href="https://www.instagram.com/urtl__logistics" target="_blank" rel="noreferrer" className="flex items-center p-3 rounded-xl bg-pink-50 hover:bg-pink-100 border border-pink-100 hover:border-pink-300 transition-all duration-300 group shadow-sm hover:shadow-md">
+                <a href="https://www.instagram.com/urtllogisticspvtltd?igsh=MXI4aWN3aGNuc21qdw%3D%3D" target="_blank" rel="noreferrer" className="flex items-center p-3 rounded-xl bg-pink-50 hover:bg-pink-100 border border-pink-100 hover:border-pink-300 transition-all duration-300 group shadow-sm hover:shadow-md">
                   <div className="bg-white p-2.5 rounded-xl shadow-sm mr-4 text-pink-600 group-hover:bg-gradient-to-tr group-hover:from-yellow-400 group-hover:via-pink-500 group-hover:to-purple-600 group-hover:text-white transition-all">
                     <Instagram size={18} />
                   </div>
@@ -153,8 +163,8 @@ const MainLayout = () => {
               &copy; {new Date().getFullYear()} URTL Logistics. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0 text-sm text-gray-500 font-bold">
-              <Link to="/" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
-              <Link to="/" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
+              <Link to="/" className="hover:text-amber-600 transition-colors">Privacy Policy</Link>
+              <Link to="/" className="hover:text-amber-600 transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>

@@ -59,8 +59,13 @@ const lrSchema = new mongoose.Schema(
     },
     payType: {
       type: String,
-      enum: ['To Pay', 'Paid', 'FOC'],
+      enum: ['To Pay', 'Paid', 'FOC', 'TBB'],
       default: 'To Pay'
+    },
+    status: {
+      type: String,
+      enum: ['Dispersed', 'Delivered', 'On the way'],
+      default: 'Dispersed'
     },
     declaredValue: {
       type: Number,
