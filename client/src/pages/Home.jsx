@@ -85,6 +85,96 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Track Parcel Section */}
+      <div className="w-full max-w-4xl px-6 mb-24 mx-auto relative z-20">
+        <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-amber-100/50">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-stone-900 mb-4">Track Your Parcel</h2>
+            <p className="text-stone-500 text-lg">Enter your LR Number to get real-time status updates.</p>
+          </div>
+          
+          <form onSubmit={handleTrack} className="relative flex items-center mb-8">
+            <Search className="absolute left-6 text-amber-500 w-6 h-6" />
+            <input 
+              type="text" 
+              placeholder="e.g. AN10023"
+              className="w-full pl-16 pr-32 py-5 bg-slate-50 border border-stone-200 rounded-full text-lg font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all uppercase placeholder-stone-400"
+              value={trackInput}
+              onChange={(e) => setTrackInput(e.target.value)}
+            />
+            <button 
+              type="submit" 
+              disabled={isTracking || !trackInput.trim()}
+              className="absolute right-2 top-2 bottom-2 px-8 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white rounded-full font-bold shadow-md shadow-amber-900/20 transition-all disabled:opacity-70 flex items-center justify-center"
+            >
+              {isTracking ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Track'}
+            </button>
+          </form>
+
+          {trackError && (
+            <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-center font-medium animate-in fade-in slide-in-from-top-2">
+              {trackError}
+            </div>
+          )}
+
+          {trackResult && (
+            <div className="bg-slate-50 rounded-3xl p-6 md:p-10 border border-stone-100 shadow-inner animate-in zoom-in-95 fade-in duration-500">
+              <div className="flex flex-col md:flex-row items-center justify-between mb-8 pb-8 border-b border-stone-200 border-dashed gap-6">
+                <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                  <span className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-1">From</span>
+                  <div className="flex items-center text-2xl font-extrabold text-stone-800 uppercase">
+                    <MapPin className="w-6 h-6 text-amber-500 mr-2" />
+                    {trackResult.fromPlace}
+                  </div>
+                </div>
+                
+                <div className="flex flex-col items-center flex-1 w-full md:px-8">
+                  <div className="w-full flex items-center">
+                    <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
+                    <div className="flex-1 h-1 bg-gradient-to-r from-amber-400 to-orange-400"></div>
+                    <Truck className="w-10 h-10 text-orange-600 mx-3 animate-bounce drop-shadow-md" />
+                    <div className="flex-1 h-1 bg-gradient-to-r from-orange-400 to-amber-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
+                  </div>
+                  <span className="mt-6 px-6 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border border-amber-200 rounded-full text-sm font-black uppercase tracking-widest shadow-sm">
+                    {trackResult.status}
+                  </span>
+                </div>
+                
+                <div className="flex flex-col items-center md:items-end text-center md:text-right">
+                  <span className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-1">To</span>
+                  <div className="flex items-center text-2xl font-extrabold text-stone-800 uppercase">
+                    {trackResult.toPlace}
+                    <MapPin className="w-6 h-6 text-orange-500 ml-2" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                <div className="flex items-start">
+                  <div className="p-3 bg-slate-50 rounded-xl border border-stone-100 mr-4">
+                    <User className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Consignor (Sender)</span>
+                    <span className="font-extrabold text-stone-800 text-lg uppercase">{trackResult.consignorName}</span>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="p-3 bg-slate-50 rounded-xl border border-stone-100 mr-4">
+                    <User className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Consignee (Receiver)</span>
+                    <span className="font-extrabold text-stone-800 text-lg uppercase">{trackResult.consigneeName}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* About Us Section */}
       <div className="w-full bg-slate-50 py-24 shadow-sm border-b border-stone-200/50 relative overflow-hidden">
         {/* Decorative elements */}
@@ -292,95 +382,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Track Parcel Section */}
-      <div className="w-full max-w-4xl px-6 mt-8 mb-24 mx-auto">
-        <div className="bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border border-amber-100/50">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-stone-900 mb-4">Track Your Parcel</h2>
-            <p className="text-stone-500 text-lg">Enter your LR Number to get real-time status updates.</p>
-          </div>
-          
-          <form onSubmit={handleTrack} className="relative flex items-center mb-8">
-            <Search className="absolute left-6 text-amber-500 w-6 h-6" />
-            <input 
-              type="text" 
-              placeholder="e.g. AN10023"
-              className="w-full pl-16 pr-32 py-5 bg-slate-50 border border-stone-200 rounded-full text-lg font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all uppercase placeholder-stone-400"
-              value={trackInput}
-              onChange={(e) => setTrackInput(e.target.value)}
-            />
-            <button 
-              type="submit" 
-              disabled={isTracking || !trackInput.trim()}
-              className="absolute right-2 top-2 bottom-2 px-8 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white rounded-full font-bold shadow-md shadow-amber-900/20 transition-all disabled:opacity-70 flex items-center justify-center"
-            >
-              {isTracking ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Track'}
-            </button>
-          </form>
 
-          {trackError && (
-            <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-center font-medium animate-in fade-in slide-in-from-top-2">
-              {trackError}
-            </div>
-          )}
-
-          {trackResult && (
-            <div className="bg-slate-50 rounded-3xl p-6 md:p-10 border border-stone-100 shadow-inner animate-in zoom-in-95 fade-in duration-500">
-              <div className="flex flex-col md:flex-row items-center justify-between mb-8 pb-8 border-b border-stone-200 border-dashed gap-6">
-                <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                  <span className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-1">From</span>
-                  <div className="flex items-center text-2xl font-extrabold text-stone-800 uppercase">
-                    <MapPin className="w-6 h-6 text-amber-500 mr-2" />
-                    {trackResult.fromPlace}
-                  </div>
-                </div>
-                
-                <div className="flex flex-col items-center flex-1 w-full md:px-8">
-                  <div className="w-full flex items-center">
-                    <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
-                    <div className="flex-1 h-1 bg-gradient-to-r from-amber-400 to-orange-400"></div>
-                    <Truck className="w-10 h-10 text-orange-600 mx-3 animate-bounce drop-shadow-md" />
-                    <div className="flex-1 h-1 bg-gradient-to-r from-orange-400 to-amber-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-amber-500 shadow-sm shadow-amber-500/50"></div>
-                  </div>
-                  <span className="mt-6 px-6 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border border-amber-200 rounded-full text-sm font-black uppercase tracking-widest shadow-sm">
-                    {trackResult.status}
-                  </span>
-                </div>
-                
-                <div className="flex flex-col items-center md:items-end text-center md:text-right">
-                  <span className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-1">To</span>
-                  <div className="flex items-center text-2xl font-extrabold text-stone-800 uppercase">
-                    {trackResult.toPlace}
-                    <MapPin className="w-6 h-6 text-orange-500 ml-2" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
-                <div className="flex items-start">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-stone-100 mr-4">
-                    <User className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Consignor (Sender)</span>
-                    <span className="font-extrabold text-stone-800 text-lg uppercase">{trackResult.consignorName}</span>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-stone-100 mr-4">
-                    <User className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold text-stone-400 uppercase tracking-widest block mb-1">Consignee (Receiver)</span>
-                    <span className="font-extrabold text-stone-800 text-lg uppercase">{trackResult.consigneeName}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* Bottom CTA Section */}
       <div className="w-full max-w-7xl px-6 mb-24 relative">
